@@ -1,28 +1,40 @@
+#include <stack>
+using namespace std;
+
 class MyQueue {
- public:
-  void push(int x) {
-    input.push(x);
-  }
+private:
+    stack<int> s1, s2;
 
-  int pop() {
-    peek();
-    const int val = output.top();
-    output.pop();
-    return val;
-  }
+public:
+    MyQueue() {}
 
-  int peek() {
-    if (output.empty())
-      while (!input.empty())
-        output.push(input.top()), input.pop();
-    return output.top();
-  }
+    void push(int x) {
+        s1.push(x);
+    }
 
-  bool empty() {
-    return input.empty() && output.empty();
-  }
+    int pop() {
+        if (s2.empty()) {
+            while (!s1.empty()) {
+                s2.push(s1.top());
+                s1.pop();
+            }
+        }
+        int front = s2.top();
+        s2.pop();
+        return front;
+    }
 
- private:
-  stack<int> input;
-  stack<int> output;
+    int peek() {
+        if (s2.empty()) {
+            while (!s1.empty()) {
+                s2.push(s1.top());
+                s1.pop();
+            }
+        }
+        return s2.top();
+    }
+
+    bool empty() {
+        return s1.empty() && s2.empty();
+    }
 };
